@@ -31,6 +31,7 @@
     "prettier"
   ],
   "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "camelcase": "off",
     "import/no-duplicates": "off",
     "react/jsx-props-no-spreading": "off",
@@ -82,6 +83,15 @@
     ],
     "@typescript-eslint/camelcase": "off"
   },
+  "overrides": [
+    {
+      // enable the rule specifically for TypeScript files
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": ["error"]
+      }
+    }
+  ],
   "settings": {
     "react": {
       "version": "detect"
@@ -89,5 +99,8 @@
     "import/resolver": {
       "typescript": {}
     }
-  }
+  },
+
+
 }
+
