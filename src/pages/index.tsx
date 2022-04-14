@@ -9,18 +9,14 @@ import { getPrismicClient } from '../services/prismic';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
-// interface Post {
-//   uid?: string;
-//   first_publication_date: string | null;
-//   data: {
-//     title: string;
-//     subtitle: string;
-//     author: string;
-//   };
-// }
-
 interface Post {
-  title: string
+  uid?: string;
+  first_publication_date: string | null;
+  data: {
+    // title: string;
+    // subtitle: string;
+    author: string;
+  };
 }
 
 interface PostProps {
@@ -38,6 +34,9 @@ interface HomeProps {
 }
 
 export default function Home({ posts }: PostProps) {
+  posts.map(post => {
+    console.log(post)
+  })
   return (
     <>
       <Head>
@@ -105,20 +104,28 @@ export default function Home({ posts }: PostProps) {
   )
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
+
   const postsResponse = await prismic.query<any>([
     Prismic.predicates.at('document.type', 'posts')
   ], {
-    fetch: ['posts.title'],
+    fetch: ['posts.title', 'posts.subtitle', 'posts.banner', 'posts.author', 'posts.content.Heading', 'posts.content.body'],
     pageSize: 5,
   });
 
-  const posts = postsResponse.results.map(post => {
+   const posts = postsResponse.results.map(post => {
     return {
-      title: RichText.asText(post.data.title),
+      uid: post.uid,
+      first_publication_date: Date.now(),
+      data: {
+        // title: RichText.asText(post.data.title), //ARRUMAR
+        // subtitle: RichText.asText(post.data.subtitle),// ARRUMAR
+        author: post.data.author,
+      }
     }
-  })
+  });
+
 
   return {
     props: {
