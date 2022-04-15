@@ -1,8 +1,9 @@
 import { GetStaticProps } from 'next';
 import { FaCalendar, FaUser } from 'react-icons/fa';
 import Head from 'next/head';
-import Prismic from '@prismicio/client'
-import { RichText } from 'prismic-dom';
+import Prismic from '@prismicio/client';
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR'
 
 import { getPrismicClient } from '../services/prismic';
 
@@ -13,8 +14,8 @@ interface Post {
   uid?: string;
   first_publication_date: string | null;
   data: {
-    // title: string;
-    // subtitle: string;
+    title: string;
+    subtitle: string;
     author: string;
   };
 }
@@ -45,55 +46,20 @@ export default function Home({ posts }: PostProps) {
 
       <main className={styles.container}>
         <div className={styles.posts}>
-          <a href="#">
-            <strong>Como utilizar Hooks</strong>
-            <p>Pensando em sincronização em vez de ciclos de vida.</p>
-            <div className={styles.info}>
-              <FaCalendar className={styles.icons}/>
-              <time>15 de mar 2022</time>
-              <FaUser className={styles.icons}/>
-              <p>Gabriel Zanin</p>
-            </div>
-          </a>
-        </div>
-
-        <div className={styles.posts}>
-          <a href="#">
-            <strong>Criando um app CRA do zero</strong>
-            <p>Tudo sobre como criar a sua primeira aplicação utilizando Create React App</p>
-            <div className={styles.info}>
-              <FaCalendar className={styles.icons}/>
-              <time>15 de mar 2022</time>
-              <FaUser className={styles.icons}/>
-              <p>Gabriel Zanin</p>
-            </div>
-          </a>
-        </div>
-
-        <div className={styles.posts}>
-          <a href="#">
-            <strong>Como utilizar Hooks</strong>
-            <p>Pensando em sincronização em vez de ciclos de vida.</p>
-            <div className={styles.info}>
-              <FaCalendar className={styles.icons}/>
-              <time>15 de mar 2022</time>
-              <FaUser className={styles.icons}/>
-              <p>Gabriel Zanin</p>
-            </div>
-          </a>
-        </div>
-
-        <div className={styles.posts}>
-          <a href="#">
-            <strong>Como utilizar Hooks</strong>
-            <p>Pensando em sincronização em vez de ciclos de vida.</p>
-            <div className={styles.info}>
-              <FaCalendar className={styles.icons}/>
-              <time>15 de mar 2022</time>
-              <FaUser className={styles.icons}/>
-              <p>Gabriel Zanin</p>
-            </div>
-          </a>
+          {
+            posts.map(post => (
+              <a href="#">
+                <strong>{post.data.title}</strong>
+                <p>{post.data.subtitle}</p>
+                <div className={styles.info}>
+                  <FaCalendar className={styles.icons}/>
+                  <time>{post.first_publication_date}</time>
+                  <FaUser className={styles.icons}/>
+                  <p>{post.data.author}</p>
+                </div>
+               </a>
+            ))
+          }
         </div>
 
         <button type="button" className={styles.morePosts}>
@@ -117,11 +83,15 @@ export const getStaticProps: GetStaticProps = async () => {
    const posts = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: Date.now(),
+      first_publication_date: format(new Date(post.last_publication_date), 'dd MMM y',
+        {
+          locale: ptBR,
+        }),
+
       data: {
-        // title: RichText.asText(post.data.title), //ARRUMAR
-        // subtitle: RichText.asText(post.data.subtitle),// ARRUMAR
-        author: post.data.author,
+         title: post.data.title,
+         subtitle: post.data.subtitle,
+         author: post.data.author,
       }
     }
   });
@@ -129,7 +99,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      posts
+      posts,
     }
   }
 };

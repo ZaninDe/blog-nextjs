@@ -1360,12 +1360,13 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.14.0.tgz#c67fc20a4d891447ca1a855d7d70fa79a3533001"
   integrity sha512-sDOAZcYwynHFTbLo6n8kIbLiVF3a3BLkrmehJUyEbT9F+Smbi47kLGS2gG2g0fjBLR/Lr1InPD7kXL7FaTqEkw==
 
-"@prismicio/client@5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@prismicio/client/-/client-5.1.1.tgz#5aa51c3efcd7fc57a08e729814f16d5cc2755d1c"
-  integrity sha512-0wtQrPZCATBmgLklQYgjSrmz3YtMP+5lHakv30MUVyUez2LVoukhVJWTj1uXwsOz2Yh2xLkAp+PHqTOiUvaM/Q==
+"@prismicio/client@^6.4.3":
+  version "6.4.3"
+  resolved "https://registry.yarnpkg.com/@prismicio/client/-/client-6.4.3.tgz#9a8358fbe9f4c871a790223b572b85bf9018cadb"
+  integrity sha512-UrOMeXc4upAqBgE0MRuw/S//NTaOi6LWTb7OmTUEyWaOVURILcMLKbcL879futl7pPfx1KI7t+cyQWnH0irCHA==
   dependencies:
-    cross-fetch "^3.0.6"
+    "@prismicio/helpers" "^2.2.1"
+    "@prismicio/types" "^0.1.27"
 
 "@prismicio/helpers@^1.0.4":
   version "1.2.0"
@@ -1382,12 +1383,22 @@
     escape-html "^1.0.3"
     imgix-url-builder "^0.0.3"
 
-"@prismicio/react@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@prismicio/react/-/react-2.2.0.tgz#908f78086da89a5c5480ad2f5b261d9695d81871"
-  integrity sha512-HTBhhtS5MvhmSmkV/GRUEFdFZ/0PhKNIFXMPOuNTWcnWi9Nlw3Co+jurIYUdI+mGt/nfyr4Wnj5XwO+94sBPRA==
+"@prismicio/helpers@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@prismicio/helpers/-/helpers-2.3.0.tgz#316cdfdf668efd379a8c2ccfc169e320da30a346"
+  integrity sha512-/3YJ3F7bN56Pn9y2B4a3t0y4QD0zVPqaHf0Rzd5jCA7Bf0wi3oQ35KHGmP3DrYzz16aQNOZgQy/IO/80QsOYTg==
   dependencies:
-    "@prismicio/helpers" "^2.2.1"
+    "@prismicio/richtext" "^2.0.1"
+    "@prismicio/types" "^0.1.27"
+    escape-html "^1.0.3"
+    imgix-url-builder "^0.0.3"
+
+"@prismicio/react@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@prismicio/react/-/react-2.3.0.tgz#3bfd4951143b41a2225083d309b9d8289190dd7a"
+  integrity sha512-bgFh/iZD4czoWakZkPc4Z0oDwur8OsxRcpVzsI0sQC8brscfS3ZbA8PK5NwBe5D2jCCzSJo8dnUnnckzAhEdWg==
+  dependencies:
+    "@prismicio/helpers" "^2.3.0"
     "@prismicio/richtext" "^2.0.1"
 
 "@prismicio/richtext@^1.1.0":
@@ -1463,10 +1474,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@slicemachine/core@1.1.7":
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/@slicemachine/core/-/core-1.1.7.tgz#fe2ada5682fbcadaeaf4f5f2b1e3a62a8590d189"
-  integrity sha512-NlxhPg3JX3EbbomRO/2FE8qfR4YdFuyy0Q/GdkZa3bceHMq1Dx5B8eyCh/UyO5A7u7B3D+71UvJf4fYpjMwJ5w==
+"@slicemachine/core@1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@slicemachine/core/-/core-1.1.8.tgz#36f08f9242eadda733566f4b6c09381366aa010f"
+  integrity sha512-y5wRXgFWMlZ6xGAndURuDT0L7StqMjcmzfq/dstln6frwWjXuOorx/oJB6B2bPXowyl3qtPVMYL4+DdP2Xquyg==
   dependencies:
     "@prismicio/types-internal" "^0.2.8"
     axios "^0.26.0"
@@ -3277,7 +3288,7 @@ create-require@^1.1.0:
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
-cross-fetch@3.1.5, cross-fetch@^3.0.6:
+cross-fetch@3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
   integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
@@ -8383,15 +8394,15 @@ slice-ansi@^4.0.0:
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
 
-slice-machine-ui@^0.3.6:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/slice-machine-ui/-/slice-machine-ui-0.3.6.tgz#d2119750e8b1da14b18fea4f48b738a48e56f16b"
-  integrity sha512-Nf3XyuCMJQEu5GeoaAdBWRFVYcqACl3XRv7FCTkcXl6QwNUBLlR5x1znjcxR+od2umG2J/s7+HFFffROX9p9+g==
+slice-machine-ui@^0.3.7:
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/slice-machine-ui/-/slice-machine-ui-0.3.7.tgz#5df5a6c87e775fc9cef2402976418d56d3b5bafc"
+  integrity sha512-3g9kUKRBqVfacuh6TJHELNP+XJqAl8oKtadUVSrbpkRo56AedqOyOy5yp7ckgoUZd6U2w+ydx7s+GArqI9K1ow==
   dependencies:
     "@babel/register" "^7.17.7"
     "@faker-js/faker" "^6.0.0"
     "@prismicio/types-internal" "^0.2.7"
-    "@slicemachine/core" "1.1.7"
+    "@slicemachine/core" "1.1.8"
     "@svgr/webpack" "^5.4.0"
     atob "^2.1.2"
     axios "^0.26.0"
