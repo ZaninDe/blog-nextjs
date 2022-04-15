@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next';
 import { FaCalendar, FaUser } from 'react-icons/fa';
 import Head from 'next/head';
+import Link from 'next/link';
 import Prismic from '@prismicio/client';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
@@ -35,9 +36,7 @@ interface HomeProps {
 }
 
 export default function Home({ posts }: PostProps) {
-  posts.map(post => {
-    console.log(post)
-  })
+
   return (
     <>
       <Head>
@@ -48,16 +47,18 @@ export default function Home({ posts }: PostProps) {
         <div className={styles.posts}>
           {
             posts.map(post => (
-              <a href="#">
-                <strong>{post.data.title}</strong>
-                <p>{post.data.subtitle}</p>
-                <div className={styles.info}>
-                  <FaCalendar className={styles.icons}/>
-                  <time>{post.first_publication_date}</time>
-                  <FaUser className={styles.icons}/>
-                  <p>{post.data.author}</p>
-                </div>
+              <Link href={`/post/${post.uid}`}>
+                <a key={post.uid}>
+                  <strong>{post.data.title}</strong>
+                  <p>{post.data.subtitle}</p>
+                  <div className={styles.info}>
+                    <FaCalendar className={styles.icons}/>
+                    <time>{post.first_publication_date}</time>
+                    <FaUser className={styles.icons}/>
+                    <p>{post.data.author}</p>
+                  </div>
                </a>
+              </Link>
             ))
           }
         </div>
@@ -83,10 +84,11 @@ export const getStaticProps: GetStaticProps = async () => {
    const posts = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: format(new Date(post.last_publication_date), 'dd MMM y',
-        {
-          locale: ptBR,
-        }),
+      first_publication_date:
+       format(new Date(post.last_publication_date), 'dd MMM y',
+         {
+           locale: ptBR,
+         }),
 
       data: {
          title: post.data.title,

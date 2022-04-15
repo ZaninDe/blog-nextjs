@@ -1,4 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Head from 'next/head';
+import { FaCalendar, FaUser, FaClock } from 'react-icons/fa';
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 
 import { getPrismicClient } from '../../services/prismic';
 
@@ -26,20 +30,85 @@ interface PostProps {
   post: Post;
 }
 
-// export default function Post() {
-//   // TODO
-// }
+export default function Post({ response }) {
+  return (
+    <>
+      {/* <Head>{post.data.title} | Blog</Head> */}
 
-// export const getStaticPaths = async () => {
-//   const prismic = getPrismicClient();
-//   const posts = await prismic.query(TODO);
+      {/* <main>
+        <img src="/images/Logo.svg" alt="Banner" />
+        <article className={styles.post}>
+          <h1>{post.data.title}</h1>
+          <div className={styles.info}>
+          <FaCalendar />
+          <time>{post.first_publication_date}</time>
 
-//   // TODO
-// };
+          <FaUser />
+          <p>{post.data.author}</p>
 
-// export const getStaticProps = async context => {
-//   const prismic = getPrismicClient();
-//   const response = await prismic.getByUID(TODO);
+          <FaClock />
+            <p>4 min</p>
+          </div>
 
-//   // TODO
-// };
+          <div
+            className={styles.postContent}
+            // dangerouslySetInnerHTML={{__html: post.}}
+          >
+
+          </div>
+        </article>
+
+
+
+      </main> */}
+    </>
+  )
+}
+
+export const getStaticPaths = async () => {
+  const prismic = getPrismicClient();
+  // const posts = await prismic.query(TODO);
+  return {
+    paths: [],
+    fallback: 'blocking' // TODO
+  }
+};
+
+export const getStaticProps: GetStaticProps = async({ params }) => {
+  const { uid } = params
+  const prismic = getPrismicClient();
+
+  const response = await prismic.getByUID<any>(
+    'posts', String(uid), {}
+  );
+  // const post = {
+  //   first_publication_date: '20-05-2022',
+  //   // format(new Date(response.last_publication_date), 'dd MMM y',
+  //   //   {
+  //   //     locale: ptBR,
+  //   //   }),
+  //   data: {
+  //     title: response.data.title,
+  //     banner: {
+  //       url: response.data.banner,
+  //     },
+  //     author: response.data.author,
+  //     content: {
+  //       heading: response.data.content.heading,
+  //       body: {
+  //         text: response.data.content.body,
+  //       }
+  //     }
+  //   }
+  // }
+
+
+  return {
+    props: {
+      response,
+    },
+    revalidate: 10,
+  }
+
+  // TODO
+};
