@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { FaCalendar, FaUser, FaClock } from 'react-icons/fa';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
+import { RichText } from 'prismic-dom';
 
 import { getPrismicClient } from '../../services/prismic';
 
@@ -30,12 +31,12 @@ interface PostProps {
   post: Post;
 }
 
-export default function Post({ response }) {
+export default function Post({ post }: PostProps) {
   return (
     <>
-      {/* <Head>{post.data.title} | Blog</Head> */}
+      <Head>{post.data.title} | Blog</Head>
 
-      {/* <main>
+      <main>
         <img src="/images/Logo.svg" alt="Banner" />
         <article className={styles.post}>
           <h1>{post.data.title}</h1>
@@ -60,7 +61,7 @@ export default function Post({ response }) {
 
 
 
-      </main> */}
+      </main>
     </>
   )
 }
@@ -78,36 +79,40 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
   const { slug } = params
   const prismic = getPrismicClient();
 
-  console.log(slug)
 
-  // const response = await prismic.getByUID<any>(
-  //   'posts', uid, {}
-  // );
-  // const post = {
-  //   first_publication_date: '20-05-2022',
-  //   // format(new Date(response.last_publication_date), 'dd MMM y',
-  //   //   {
-  //   //     locale: ptBR,
-  //   //   }),
-  //   data: {
-  //     title: response.data.title,
-  //     banner: {
-  //       url: response.data.banner,
-  //     },
-  //     author: response.data.author,
-  //     content: {
-  //       heading: response.data.content.heading,
-  //       body: {
-  //         text: response.data.content.body,
-  //       }
-  //     }
-  //   }
-  // }
+  const response = await prismic.getByUID<any>(
+    'posts', String(slug), {}
+  );
+
+  console.log(response.data.content.map(cont => console.log(cont.body.text)))
+
+  const post = {
+    first_publication_date: format
+    (new Date(response.last_publication_date),
+     'dd MMM y',
+      {
+        locale: ptBR,
+      }),
+
+    data: {
+      title: response.data.title,
+      banner: {
+        url: response.data.banner.url,
+      },
+      author: response.data.author,
+      content: {
+        heading: 'response.data.content.map(value => {RichText.asHtml(value)})',
+        body: {
+          text: 'RichText.asHtml(response.data.content.body)',
+        }
+      }
+    }
+  }
 
 
   return {
     props: {
-      // response,
+      post
     },
     revalidate: 10,
   }
