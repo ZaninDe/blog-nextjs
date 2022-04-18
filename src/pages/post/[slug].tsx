@@ -75,12 +75,14 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async({ params }) => {
-  const { uid } = params
+  const { slug } = params
   const prismic = getPrismicClient();
 
-  const response = await prismic.getByUID<any>(
-    'posts', String(uid), {}
-  );
+  console.log(slug)
+
+  // const response = await prismic.getByUID<any>(
+  //   'posts', uid, {}
+  // );
   // const post = {
   //   first_publication_date: '20-05-2022',
   //   // format(new Date(response.last_publication_date), 'dd MMM y',
@@ -105,7 +107,7 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
 
   return {
     props: {
-      response,
+      // response,
     },
     revalidate: 10,
   }
