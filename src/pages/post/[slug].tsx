@@ -84,6 +84,15 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
     'posts', String(slug), {}
   );
 
+  // const content = response.data.content.map(cont => RichText.asHtml(cont.body));
+
+  response.data.content.map(cont => {
+    const content = {
+      heading: cont.heading,
+      body: cont.body.text
+  }})
+
+
   console.log(response.data.content.map(cont => RichText.asHtml(cont.body)))
 
   const post = {
@@ -103,7 +112,7 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
       content: {
         heading: 'response.data.content.map(cont => {RichText.asHtml(cont.heading)})',
         body: {
-          text: response.data.content.map(cont => RichText.asHtml(cont.body)),
+          text: content,
         }
       }
     }
