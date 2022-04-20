@@ -84,16 +84,21 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
     'posts', String(slug), {}
   );
 
-  // const content = response.data.content.map(cont => RichText.asHtml(cont.body));
+  const content = response.data.content.map(cont => RichText.asHtml(cont.body));
 
-  response.data.content.map(cont => {
-    const content = {
+    const prismicContent = response.data.content.map(cont => {
+      // console.log(cont.heading);
       heading: cont.heading,
-      body: cont.body.text
-  }})
 
+      cont.body.map(bodyContent => {
+        // console.log(bodyContent.text)
+      body: {
+        text: bodyContent.text
+      }
+      });
+    })
 
-  console.log(response.data.content.map(cont => RichText.asHtml(cont.body)))
+    prismicContent.map(value => console.log(value))
 
   const post = {
     first_publication_date: format
