@@ -53,7 +53,7 @@ export default function Post({ post }: PostProps) {
 
           <div
             className={styles.postContent}
-            dangerouslySetInnerHTML={{__html: post.data.content.body.text}}
+            // dangerouslySetInnerHTML={{__html: post.data.content.body.text}}
           >
 
           </div>
@@ -84,8 +84,6 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
     'posts', String(slug), {}
   );
 
-  const content = response.data.content.map(cont => RichText.asHtml(cont.body));
-
     const prismicContent = response.data.content.map(cont => {
       // console.log(cont.heading);
       heading: cont.heading,
@@ -98,7 +96,6 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
       });
     })
 
-    prismicContent.map(value => console.log(value))
 
   const post = {
     first_publication_date: format
@@ -115,13 +112,16 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
       },
       author: response.data.author,
       content: {
-        heading: 'response.data.content.map(cont => {RichText.asHtml(cont.heading)})',
+        heading: 'response.data.content.heading',
         body: {
-          text: content,
+          text: response.data.content.map(value => RichText.asHtml(value.body))
         }
       }
     }
   }
+
+  console.log(post.data.content)
+
 
 
   return {
