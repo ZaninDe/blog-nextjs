@@ -53,7 +53,7 @@ export default function Post({ post }: PostProps) {
 
           <div
             className={styles.postContent}
-            dangerouslySetInnerHTML={{__html: post.data.content.body.text}}
+            // dangerouslySetInnerHTML={{__html: post.data.content.body}}
           >
 
           </div>
@@ -82,8 +82,7 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
 
   const response = await prismic.getByUID<any>(
     'posts', String(slug), {}
-  );
-
+  )
 
   const post = {
     first_publication_date: format
@@ -99,17 +98,14 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
         url: response.data.banner.url,
       },
       author: response.data.author,
-      content: {
-        heading: response.data.content.map(value => value.heading),
-        body: {
-          text: response.data.content.map(value => RichText.asHtml(value.body))
+      content: response.data.content.map(content => {
+        return {
+          heading: content.heading,
+          body: [...content.body]
         }
-      }
+      })
     }
   }
-
-  console.log(post.data.content)
-
 
 
   return {
