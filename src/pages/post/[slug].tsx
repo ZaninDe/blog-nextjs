@@ -53,7 +53,7 @@ export default function Post({ post }: PostProps) {
 
           <div
             className={styles.postContent}
-            dangerouslySetInnerHTML={{__html: String(post.data.content)}}
+            dangerouslySetInnerHTML={{__html: post.data.content.body.text}}
           >
 
           </div>
@@ -100,7 +100,7 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
       },
       author: response.data.author,
       content: {
-        heading: 'response.data.content.heading',
+        heading: response.data.content.map(value => value.heading),
         body: {
           text: response.data.content.map(value => RichText.asHtml(value.body))
         }
@@ -108,7 +108,7 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
     }
   }
 
-  console.log(String(post.data.content))
+  console.log(post.data.content)
 
 
 
