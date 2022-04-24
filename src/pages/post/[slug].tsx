@@ -51,11 +51,8 @@ export default function Post({ post }: PostProps) {
             <p>4 min</p>
           </div>
 
-          <div
-            className={styles.postContent}
-            // dangerouslySetInnerHTML={{__html: post.data.content.body}}
-          >
-
+          <div className={styles.postContent}>
+          <p>{post.data.author}</p>
           </div>
         </article>
 
