@@ -10,6 +10,7 @@ import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import { useState } from 'react';
 
 interface Post {
   uid?: string;
@@ -35,8 +36,20 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ posts }: PostProps) {
+export default function Home({ postsPagination }: HomeProps): JSX.Element{
 
+  const formatedPosts = postsPagination.results.map(post => {
+    return {
+      ...post,
+      first_publication_date:
+      format(new Date(post.first_publication_date), 'dd MMM yyyy',
+        {
+          locale: ptBR,
+        }),
+    }
+  });
+
+  const [posts, usePosts] = useState<Post[]>(formatedPosts)
   return (
     <>
       <Head>
@@ -47,8 +60,8 @@ export default function Home({ posts }: PostProps) {
         <div className={styles.posts}>
           {
             posts.map(post => (
-              <Link href={`/post/${post.uid}`}>
-                <a key={post.uid}>
+              <Link key={post.uid} href={`/post/${post.uid}`}>
+                <a >
                   <strong>{post.data.title}</strong>
                   <p>{post.data.subtitle}</p>
                   <div className={styles.info}>
@@ -78,18 +91,17 @@ export const getStaticProps: GetStaticProps = async () => {
     Prismic.predicates.at('document.type', 'posts')
   ], {
     fetch: ['posts.title', 'posts.subtitle', 'posts.banner', 'posts.author', 'posts.content.Heading', 'posts.content.body'],
-    pageSize: 5,
+    pageSize: 1,
   });
 
+
+
    const posts = postsResponse.results.map(post => {
+
+
     return {
       uid: post.uid,
-      first_publication_date:
-       format(new Date(post.last_publication_date), 'dd MMM y',
-         {
-           locale: ptBR,
-         }),
-
+      first_publication_date: post.first_publication_date,
       data: {
          title: post.data.title,
          subtitle: post.data.subtitle,
@@ -98,10 +110,14 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
 
+  const postsPagination = {
+    next_page: postsResponse.next_page,
+    results: posts,
+  }
 
   return {
     props: {
-      posts,
+      postsPagination,
     }
   }
 };

@@ -4,11 +4,13 @@ import { FaCalendar, FaUser, FaClock } from 'react-icons/fa';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { RichText } from 'prismic-dom';
-
+import  Prismic  from '@prismicio/client';
+import { useRouter } from 'next/router'
 import { getPrismicClient } from '../../services/prismic';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
+import { route } from 'next/dist/next-server/server/router';
 
 interface Post {
   first_publication_date: string | null;
@@ -31,23 +33,32 @@ interface PostProps {
   post: Post;
 }
 
-export default function Post({ post }: PostProps) {
+export default function Post({ post }: PostProps): JSX.Element {
+
+  const router = useRouter()
+
+  if(router.isFallback) {
+    return <h1>Carregando...</h1>
+  }
+
   return (
     <>
-      <Head>{post.data.title} | Blog</Head>
+      <Head>
+        <title>{post.data.title} | Blog</title>
+      </Head>
 
 
-        <img className={styles.banner} src="/images/Banner.svg" alt="Banner" />
+        <img className={styles.banner} src={post.data.banner.url} alt="Banner" />
         <article className={styles.main}>
           <h1 className={styles.title} >{post.data.title}</h1>
           <div className={styles.info}>
-            <FaCalendar />
+            <FaCalendar className={styles.icons}/>
             <time>{post.first_publication_date}</time>
 
-            <FaUser />
+            <FaUser className={styles.icons}/>
             <p>{post.data.author}</p>
 
-            <FaClock />
+            <FaClock className={styles.icons}/>
               <p>4 min</p>
           </div>
 
@@ -67,12 +78,23 @@ export default function Post({ post }: PostProps) {
   )
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const prismic = getPrismicClient();
-  // const posts = await prismic.query(TODO);
+  const posts = await prismic.query([
+    Prismic.Predicates.at('document.type', 'posts'),
+  ])
+
+  const paths = posts.results.map(post => {
+    return {
+      params: {
+        slug:post.uid,
+      }
+    }
+  })
+
   return {
-    paths: [],
-    fallback: 'blocking' // TODO
+    paths,
+    fallback: true,
   }
 };
 
