@@ -36,29 +36,33 @@ export default function Post({ post }: PostProps) {
     <>
       <Head>{post.data.title} | Blog</Head>
 
-      <main>
-        <img src="/images/Logo.svg" alt="Banner" />
-        <article className={styles.post}>
-          <h1>{post.data.title}</h1>
+
+        <img className={styles.banner} src="/images/Banner.svg" alt="Banner" />
+        <article className={styles.main}>
+          <h1 className={styles.title} >{post.data.title}</h1>
           <div className={styles.info}>
-          <FaCalendar />
-          <time>{post.first_publication_date}</time>
+            <FaCalendar />
+            <time>{post.first_publication_date}</time>
 
-          <FaUser />
-          <p>{post.data.author}</p>
+            <FaUser />
+            <p>{post.data.author}</p>
 
-          <FaClock />
-            <p>4 min</p>
+            <FaClock />
+              <p>4 min</p>
           </div>
 
-          <div className={styles.postContent}>
-          <p>{post.data.author}</p>
-          </div>
+          {post.data.content.map(content => {
+            return (
+              <article>
+                <h2>{content.heading}</h2>
+              <div
+                className={styles.content}
+                dangerouslySetInnerHTML={{__html: RichText.asHtml(content.body)}}
+              />
+              </article>
+            )
+          })}
         </article>
-
-
-
-      </main>
     </>
   )
 }

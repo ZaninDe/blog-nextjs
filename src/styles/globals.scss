@@ -30,6 +30,13 @@ body {
 
 body, input, textarea, select, button {
   font: 400 1rem "Inter", sans-serif;
+  p {
+    color: var(--gray-500);
+  }
+
+  h1, h2, strong {
+    color: var(--gray-100)
+  }
 }
 
 button {

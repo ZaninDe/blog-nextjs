@@ -1,1 +1,22 @@
-// TODO
+.banner {
+  width: 100vw;
+  height: 400px;
+}
+
+.main {
+  max-width: 720px;
+  margin: 4rem auto;
+
+  .title {
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 3.625rem;
+  }
+
+  .info {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
