@@ -35,6 +35,16 @@ interface PostProps {
 
 export default function Post({ post }: PostProps): JSX.Element {
 
+  const formatedPosts =  {
+
+      ...post,
+      first_publication_date:
+      format(new Date(post.first_publication_date), 'dd MMM yyyy',
+        {
+          locale: ptBR,
+        }),
+  }
+
   const router = useRouter()
 
   if(router.isFallback) {
@@ -44,25 +54,25 @@ export default function Post({ post }: PostProps): JSX.Element {
   return (
     <>
       <Head>
-        <title>{post.data.title} | Blog</title>
+        <title>{formatedPosts.data.title} | Blog</title>
       </Head>
 
 
-        <img className={styles.banner} src={post.data.banner.url} alt="Banner" />
+        <img className={styles.banner} src={formatedPosts.data.banner.url} alt="Banner" />
         <article className={styles.main}>
-          <h1 className={styles.title} >{post.data.title}</h1>
+          <h1 className={styles.title} >{formatedPosts.data.title}</h1>
           <div className={styles.info}>
             <FaCalendar className={styles.icons}/>
-            <time>{post.first_publication_date}</time>
+            <time>{formatedPosts.first_publication_date}</time>
 
             <FaUser className={styles.icons}/>
-            <p>{post.data.author}</p>
+            <p>{formatedPosts.data.author}</p>
 
             <FaClock className={styles.icons}/>
               <p>4 min</p>
           </div>
 
-          {post.data.content.map(content => {
+          {formatedPosts.data.content.map(content => {
             return (
               <article>
                 <h2>{content.heading}</h2>
@@ -108,12 +118,7 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
   )
 
   const post = {
-    first_publication_date: format
-    (new Date(response.last_publication_date),
-     'dd MMM y',
-      {
-        locale: ptBR,
-      }),
+    first_publication_date: response.data.first_publication_date,
 
     data: {
       title: response.data.title,
