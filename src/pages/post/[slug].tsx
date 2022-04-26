@@ -13,9 +13,11 @@ import styles from './post.module.scss';
 import { route } from 'next/dist/next-server/server/router';
 
 interface Post {
+  uid?: string;
   first_publication_date: string | null;
   data: {
     title: string;
+    subtitle: string;
     banner: {
       url: string;
     };
@@ -118,10 +120,12 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
   )
 
   const post = {
-    first_publication_date: response.data.first_publication_date,
+    uid: response.uid,
+    first_publication_date: response.first_publication_date,
 
     data: {
       title: response.data.title,
+      subtitle: response.data.subtitle,
       banner: {
         url: response.data.banner.url,
       },
@@ -136,12 +140,12 @@ export const getStaticProps: GetStaticProps = async({ params }) => {
   }
 
 
+
+
   return {
     props: {
       post
     },
     revalidate: 10,
   }
-
-  // TODO
 };
